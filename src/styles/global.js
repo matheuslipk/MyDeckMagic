@@ -9,28 +9,19 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
-  html{
-    display: flex;
+  html, body{
     min-height: 100%;
   }
 
   body{
-    flex:1;
     background: ${cores.background};
     font-family: Arial, Helvetica, sans-serif;
-    /* border: 1px solid blue; */
     margin-top: ${tamanhos.alturaHeader};
     align-self: stretch;
   }
 
   button{
     cursor: pointer;
-  }
-
-  #root{
-    display: flex;
-    min-height: 100%;
-    /* border: 1px solid red; */
   }
 
   a{

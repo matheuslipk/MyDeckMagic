@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { cores } from '../../constants';
+import { cores, tamanhos } from '../../constants';
 
 export const Container = styled.div`
   display: flex;
@@ -9,14 +9,32 @@ export const Container = styled.div`
   width: 100%;
 `;
 
+export const GameArea = styled.div`
+  display: ${(props) => (props.visible ? 'flex' : 'none')};
+  flex-direction: column;
+  /* border: 1px solid red; */
+
+  @media(max-width: ${tamanhos.widthMed}){
+    justify-content: space-around;
+    flex-direction: row;
+  }
+
+`;
+
 export const Pilha = styled.div`
   display: flex;
   flex-direction: row;
-  border: 1px solid;
+  /* border: 1px solid white; */
   align-items: center;
   margin: 5px;
   cursor: pointer;
-  
+  justify-content: space-around;
+
+  @media(max-width: ${tamanhos.widthMed}){
+    flex: 1;
+    flex-direction: column;
+  }
+
   &:hover{
     background: #ddd;
   }
@@ -37,10 +55,16 @@ export const HeaderPilha = styled.div`
 export const Carta = styled.div`
   display: flex;
   width: 113px;
-  margin: 0 5px;
+  margin: 5px;
   
   img{
     width: 113px;
+    @media(max-width: ${tamanhos.widthMed}){
+      width: 90px;
+      margin: 0 auto;
+    }
+
+
   }
 `;
 
@@ -54,7 +78,7 @@ export const MyButton = styled.button.attrs({
 })`
   background: ${cores.primaria};
   border: none;
-  padding: 5px;
+  padding: 10px 5px;
   color: #fff;
   flex: 1;
   margin: 0 2px;
