@@ -21,7 +21,7 @@ export const Modal = styled.div`
   left: 0;
   bottom:0;
   display: ${(props) => (props.visible ? 'flex' : 'none')};
-  z-index: 10;
+  z-index: 100;
   justify-content: center;
   align-items: center;
   

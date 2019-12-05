@@ -9,10 +9,12 @@ import {
   Container, Carta, Pilha, HeaderPilha, MyButton, OptionsGame, GameArea,
 } from './styles';
 import { cores } from '../../constants';
+import { Modal } from '../../components/Modal';
 
 export default function Home() {
   const deck = useSelector((state) => state.deck);
   const cards = useSelector((state) => state.card);
+  const [etapa, setEtapa] = useState(0);
   const [pilha1, setpilha1] = useState([]);
   const [pilha2, setpilha2] = useState([]);
   const [pilha3, setpilha3] = useState([]);
@@ -23,15 +25,34 @@ export default function Home() {
   async function newGame(deckId) {
     const response = await api.get(`/deck/${deckId}/draw/?count=21`);
     setStarted(true);
+    setEtapa(1);
     dispatch(cardActions.addCards(response.data.cards));
+  }
+
+  function hiddeCards(value) {
+    let action = 'none';
+    if (!value) {
+      action = 'flex';
+    }
+    const p1 = document.getElementById('pilha1');
+    const p2 = document.getElementById('pilha2');
+    const p3 = document.getElementById('pilha3');
+    p1.children[1].style.display = action;
+    p2.children[1].style.display = action;
+    p3.children[1].style.display = action;
   }
 
   function next() {
     if (pilhaSelecionada === 0) {
-      setPilhaSelecionada(0);
       alert('Selecione em qual pilha sua carta está');
       return;
     }
+
+    setPilhaSelecionada(0);
+    hiddeCards(true);
+    setTimeout(() => {
+      hiddeCards(false);
+    }, 700);
     if (pilhaSelecionada === 1) {
       dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
     }
@@ -41,6 +62,15 @@ export default function Home() {
     if (pilhaSelecionada === 3) {
       dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
     }
+
+    if (etapa >= 3) {
+      alert('Sua carta é a do meio');
+      setStarted(false);
+      setEtapa(0);
+      return;
+    }
+
+    setEtapa(etapa + 1);
   }
 
   useEffect(() => {
@@ -67,6 +97,7 @@ export default function Home() {
 
   return (
     <Content>
+      <Modal />
       <Container color={cores.background}>
         <OptionsGame>
           <MyButton onClick={() => newGame(deck.deck_id)}>
@@ -80,35 +111,41 @@ export default function Home() {
         <GameArea visible={started}>
           <Pilha onClick={() => setPilhaSelecionada(1)} id="pilha1">
             <HeaderPilha>1</HeaderPilha>
-            {
-              pilha1.map((card) => (
-                <Carta key={card.code} className="card">
-                  <img src={card.image} alt={card.code} />
-                </Carta>
-              ))
-            }
+            <div>
+              {
+                pilha1.map((card) => (
+                  <Carta key={card.code} className="card">
+                    <img src={card.image} alt={card.code} />
+                  </Carta>
+                ))
+              }
+            </div>
           </Pilha>
 
           <Pilha onClick={() => setPilhaSelecionada(2)} id="pilha2">
             <HeaderPilha>2</HeaderPilha>
-            {
-              pilha2.map((card) => (
-                <Carta key={card.code} className="card">
-                  <img src={card.image} alt={card.code} />
-                </Carta>
-              ))
-            }
+            <div>
+              {
+                pilha2.map((card) => (
+                  <Carta key={card.code} className="card">
+                    <img src={card.image} alt={card.code} />
+                  </Carta>
+                ))
+              }
+            </div>
           </Pilha>
 
           <Pilha onClick={() => setPilhaSelecionada(3)} id="pilha3">
             <HeaderPilha>3</HeaderPilha>
-            {
-              pilha3.map((card) => (
-                <Carta key={card.code} className="card">
-                  <img src={card.image} alt={card.code} />
-                </Carta>
-              ))
-            }
+            <div>
+              {
+                pilha3.map((card) => (
+                  <Carta key={card.code} className="card">
+                    <img src={card.image} alt={card.code} />
+                  </Carta>
+                ))
+              }
+            </div>
           </Pilha>
         </GameArea>
       </Container>

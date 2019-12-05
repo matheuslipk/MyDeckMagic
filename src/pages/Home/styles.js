@@ -29,7 +29,18 @@ export const Pilha = styled.div`
   align-items: center;
   margin: 5px;
   cursor: pointer;
-  justify-content: space-around;
+
+  >div + div{
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+
+    @media(max-width: ${tamanhos.widthMed}){
+      flex: 1;
+      flex-direction: column;
+    }
+
+  }
 
   @media(max-width: ${tamanhos.widthMed}){
     flex: 1;
