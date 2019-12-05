@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as deckActions from '../../store/actions/deckAction';
+import * as cardActions from '../../store/actions/cardActions';
 import api from '../../services/api';
 import { Content } from '../../styles/myComponents';
 import {
@@ -11,7 +12,7 @@ import { cores } from '../../constants';
 
 export default function Home() {
   const deck = useSelector((state) => state.deck);
-  const [cartas, setCartas] = useState([]);
+  const cards = useSelector((state) => state.card);
   const [pilha1, setpilha1] = useState([]);
   const [pilha2, setpilha2] = useState([]);
   const [pilha3, setpilha3] = useState([]);
@@ -19,11 +20,10 @@ export default function Home() {
   const [pilhaSelecionada, setPilhaSelecionada] = useState(0);
   const dispatch = useDispatch();
 
-  function newGame(deckId) {
-    api.get(`/deck/${deckId}/draw/?count=21`).then((response) => {
-      setStarted(true);
-      setCartas(response.data.cards);
-    });
+  async function newGame(deckId) {
+    const response = await api.get(`/deck/${deckId}/draw/?count=21`);
+    setStarted(true);
+    dispatch(cardActions.addCards(response.data.cards));
   }
 
   function next() {
@@ -33,13 +33,13 @@ export default function Home() {
       return;
     }
     if (pilhaSelecionada === 1) {
-      setCartas([...pilha3, ...pilha1, ...pilha2]);
+      dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
     }
     if (pilhaSelecionada === 2) {
-      setCartas([...pilha3, ...pilha2, ...pilha1]);
+      dispatch(cardActions.addCards([...pilha3, ...pilha2, ...pilha1]));
     }
     if (pilhaSelecionada === 3) {
-      setCartas([...pilha2, ...pilha3, ...pilha1]);
+      dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
     }
   }
 
@@ -54,16 +54,16 @@ export default function Home() {
     const p2 = [];
     const p3 = [];
 
-    for (let i = 0; i < cartas.length - 2; i += 3) {
-      p1.push(cartas[i]);
-      p2.push(cartas[i + 1]);
-      p3.push(cartas[i + 2]);
+    for (let i = 0; i < cards.length - 2; i += 3) {
+      p1.push(cards[i]);
+      p2.push(cards[i + 1]);
+      p3.push(cards[i + 2]);
     }
 
     setpilha1(p1);
     setpilha2(p2);
     setpilha3(p3);
-  }, [cartas]);
+  }, [cards]);
 
   return (
     <Content>
@@ -78,33 +78,33 @@ export default function Home() {
         </OptionsGame>
 
         <GameArea visible={started}>
-          <Pilha onClick={() => setPilhaSelecionada(1)}>
+          <Pilha onClick={() => setPilhaSelecionada(1)} id="pilha1">
             <HeaderPilha>1</HeaderPilha>
             {
               pilha1.map((card) => (
-                <Carta key={card.code}>
+                <Carta key={card.code} className="card">
                   <img src={card.image} alt={card.code} />
                 </Carta>
               ))
             }
           </Pilha>
 
-          <Pilha onClick={() => setPilhaSelecionada(2)}>
+          <Pilha onClick={() => setPilhaSelecionada(2)} id="pilha2">
             <HeaderPilha>2</HeaderPilha>
             {
               pilha2.map((card) => (
-                <Carta key={card.code}>
+                <Carta key={card.code} className="card">
                   <img src={card.image} alt={card.code} />
                 </Carta>
               ))
             }
           </Pilha>
 
-          <Pilha onClick={() => setPilhaSelecionada(3)}>
+          <Pilha onClick={() => setPilhaSelecionada(3)} id="pilha3">
             <HeaderPilha>3</HeaderPilha>
             {
               pilha3.map((card) => (
-                <Carta key={card.code}>
+                <Carta key={card.code} className="card">
                   <img src={card.image} alt={card.code} />
                 </Carta>
               ))

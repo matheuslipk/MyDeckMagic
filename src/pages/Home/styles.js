@@ -7,6 +7,7 @@ export const Container = styled.div`
   background-color: ${(props) => props.color};
   min-height: 100%;
   width: 100%;
+  max-width: 1100px;
 `;
 
 export const GameArea = styled.div`
@@ -56,7 +57,8 @@ export const Carta = styled.div`
   display: flex;
   width: 113px;
   margin: 5px;
-  
+  transition: 1s;
+
   img{
     width: 113px;
     @media(max-width: ${tamanhos.widthMed}){

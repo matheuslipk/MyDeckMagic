@@ -14,6 +14,6 @@ export default function deck(state = initialValue, action) {
       return initialValue;
 
     default:
-      return initialValue;
+      return state;
   }
 }

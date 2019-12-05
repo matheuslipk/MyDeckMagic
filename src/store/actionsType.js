@@ -3,4 +3,8 @@ export default {
     create: '@deck/CREATE',
     destroy: '@deck/DESTROY',
   },
+  cards: {
+    add: '@cards/ADD',
+    destroy: '@cards/DESTROY',
+  },
 };
