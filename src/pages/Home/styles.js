@@ -85,7 +85,7 @@ export const Carta = styled.div`
     }
 
     @media(max-width: ${tamanhos.widthMin}){
-      width: 70px;
+      width: 50px;
       margin: 0 auto;
     }
 

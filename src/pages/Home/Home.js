@@ -9,7 +9,7 @@ import {
   Container, Carta, Pilha, HeaderPilha, MyButton, OptionsGame, GameArea,
 } from './styles';
 import { cores } from '../../constants';
-import { Modal } from '../../components/Modal';
+import Modal from '../../components/Modal/Modal';
 import * as functions from './functions';
 
 export default function Home() {
@@ -20,11 +20,13 @@ export default function Home() {
   const [pilha2, setpilha2] = useState([]);
   const [pilha3, setpilha3] = useState([]);
   const [started, setStarted] = useState(true);
+  const [modalVisible, setModalVisible] = useState(true);
   const [pilhaSelecionada, setPilhaSelecionada] = useState(0);
   const dispatch = useDispatch();
 
   async function newGame(deckId) {
     const response = await api.get(`/deck/${deckId}/draw/?count=21`);
+    setModalVisible(false);
     setStarted(true);
     setEtapa(1);
     dispatch(cardActions.addCards(response.data.cards));
@@ -35,8 +37,12 @@ export default function Home() {
       alert('Selecione em qual pilha sua carta está');
       return;
     }
+
+
     setPilhaSelecionada(0);
     functions.animation();
+
+    const timer = etapa > 2 ? 0 : 1000;
 
     setTimeout(() => {
       if (pilhaSelecionada === 1) {
@@ -48,13 +54,13 @@ export default function Home() {
       if (pilhaSelecionada === 3) {
         dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
       }
-    }, 1000);
-
+    }, timer);
 
     if (etapa >= 3) {
-      alert('Sua carta é a do meio');
+      setModalVisible(true);
       setStarted(false);
       setEtapa(0);
+      return;
     }
 
     setEtapa(etapa + 1);
@@ -84,7 +90,17 @@ export default function Home() {
 
   return (
     <Content>
-      <Modal />
+
+      {
+        cards[10] && (
+          <Modal
+            visible={modalVisible}
+            card={cards[10].image}
+            onBack={() => newGame(deck.deck_id)}
+          />
+        )
+      }
+
       <Container color={cores.background}>
         <OptionsGame>
           <MyButton onClick={() => newGame(deck.deck_id)}>
