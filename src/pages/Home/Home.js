@@ -15,7 +15,6 @@ import * as functions from './functions';
 export default function Home() {
   const deck = useSelector((state) => state.deck);
   const cards = useSelector((state) => state.card);
-  const [partida, setPartida] = useState(0);
   const [etapa, setEtapa] = useState(0);
   const [pilha1, setpilha1] = useState([]);
   const [pilha2, setpilha2] = useState([]);
@@ -32,25 +31,15 @@ export default function Home() {
   }
 
   async function newGame(deckId) {
-    if (partida >= 2) {
-      api.get('/deck/new/shuffle/?deck_count=1').then((response) => {
-        dispatch(deckActions.createDeck(response.data));
-        reiniciarVariaveis();
-      });
-      setPartida(1);
-      return;
+    if (cards.length < 21) {
+      const response = await api.get(`/deck/${deckId}/draw/?count=21`);
+      dispatch(cardActions.addCards(response.data.cards));
     }
-    setPartida(partida + 1);
-    const response = await api.get(`/deck/${deckId}/draw/?count=21`);
-
     reiniciarVariaveis();
-    dispatch(cardActions.addCards(response.data.cards));
   }
 
   function next(pilha) {
-    functions.animation();
     setPilhaSelecionada(0);
-    const timer = etapa > 2 ? 0 : 1000;
 
     setTimeout(() => {
       if (pilha === 1) {
@@ -62,16 +51,19 @@ export default function Home() {
       if (pilha === 3) {
         dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
       }
-    }, timer);
+    }, 1000);
 
     if (etapa >= 3) {
-      setModalVisible(true);
-      setStarted(false);
-      setEtapa(0);
-      return;
+      functions.juntaESepara(pilha);
+      setTimeout(() => {
+        setModalVisible(true);
+        setStarted(false);
+        setEtapa(0);
+      }, 1000);
+    } else {
+      functions.juntaESepara(pilha);
+      setEtapa(etapa + 1);
     }
-
-    setEtapa(etapa + 1);
   }
 
   function selecionarPilha(value) {
@@ -114,7 +106,7 @@ export default function Home() {
       }
 
       <Container color={cores.background}>
-        <OptionsGame visible={!started}>
+        <OptionsGame visible>
           <MyButton onClick={() => newGame(deck.deck_id)}>
             Novo Jogo
           </MyButton>

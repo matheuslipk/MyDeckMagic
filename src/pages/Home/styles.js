@@ -28,9 +28,8 @@ export const Pilha = styled.div`
   margin: 5px 0;
   padding: 0 10px;
   cursor: pointer;
-  
   transition: transform ${transitions.short};
-  overflow: hidden;
+  /* overflow: hidden; */
 
   border: ${(props) => (props.selecionada ? `2px solid ${cores.primaria}` : 'none')};
 
@@ -50,7 +49,7 @@ export const Pilha = styled.div`
     flex-direction: column;
   }
 
-  @media(min-width: ${tamanhos.widthMed}){
+  @media(min-width: ${tamanhos.widthMin}){
     &:hover{
       background: #fff3;
     }
@@ -80,7 +79,7 @@ export const Carta = styled.div`
     }
 
     @media(max-width: ${tamanhos.widthMin}){
-      width: 55px;
+      width: 60px;
       margin: 0 auto;
     }
   }

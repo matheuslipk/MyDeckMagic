@@ -19,7 +19,7 @@ export const zIndex = {
 };
 
 export const transitions = {
-  short: '0.2s',
+  short: '0.3s',
   med: '0.5s',
   long: '1s',
 };

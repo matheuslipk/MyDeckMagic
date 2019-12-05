@@ -3,7 +3,7 @@ import { cores } from '../../constants';
 
 const rotate = keyframes`
   from{
-    transform: rotate(0deg) scale(0.1);
+    transform: rotate(0deg) scale(0) ;
   }
 
   to{
@@ -14,7 +14,7 @@ const rotate = keyframes`
 export const Container = styled.div`
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.3);
   position:absolute;
   top:0;
   right: 0;

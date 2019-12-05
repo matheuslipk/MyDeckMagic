@@ -1,3 +1,14 @@
+function juntarTodasAsCartas() {
+  const p1 = document.getElementById('pilha1');
+  const cartasP1 = p1.getElementsByClassName('card');
+  const cartas = document.getElementsByClassName('card');
+
+  for (let i = 0; i < cartas.length - 1; i += 1) {
+    const distX = cartasP1[0].offsetLeft - cartas[i + 1].offsetLeft;
+    const distY = cartasP1[0].offsetTop - cartas[i + 1].offsetTop;
+    cartas[i + 1].style.transform = `translate(${distX}px, ${distY}px)`;
+  }
+}
 
 function juntarPilha(pilha) {
   const p1 = document.getElementById(pilha);
@@ -40,33 +51,14 @@ export function espalharTodas() {
   }
 }
 
-function ocultarHeaderPilha() {
-  const headers = document.getElementsByClassName('headerPilha');
-  for (let i = 0; i < headers.length; i += 1) {
-    headers[i].style.display = 'none';
-  }
-}
-
-function exibirHeaderPilha() {
-  const headers = document.getElementsByClassName('headerPilha');
-  for (let i = 0; i < headers.length; i += 1) {
-    headers[i].style.display = 'flex';
-  }
-}
-
-export function animation() {
-  ocultarHeaderPilha();
-  juntarPilha('pilha1');
-  juntarPilha('pilha2');
-  juntarPilha('pilha3');
+export function juntaESepara(pilha) {
+  juntarPilha(`pilha${pilha}`);
 
   setTimeout(() => {
-    juntarColunas();
+    juntarTodasAsCartas();
   }, 500);
 
   setTimeout(() => {
-    separarColunas();
     espalharTodas();
-    exibirHeaderPilha();
   }, 1000);
 }
