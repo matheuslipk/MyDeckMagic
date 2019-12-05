@@ -11,7 +11,7 @@ export const Container = styled.div`
   flex-direction: row;
   background-color:${cores.primaria};
   padding: 0 10px;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   z-index: ${zIndex.header};
   height: ${tamanhos.alturaHeader};

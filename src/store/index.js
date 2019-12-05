@@ -7,10 +7,10 @@ const reducers = combineReducers({
   card,
 });
 
-const enhancer = process.env.NODE_ENV === 'development'
-  ? console.tron.createEnhancer() : null;
+// const enhancer = process.env.NODE_ENV === 'development'
+//   ? console.tron.createEnhancer() : null;
 
-// const store = createStore(reducers);
-const store = createStore(reducers, enhancer);
+const store = createStore(reducers);
+// const store = createStore(reducers, enhancer);
 
 export default store;

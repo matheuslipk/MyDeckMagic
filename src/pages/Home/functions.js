@@ -40,7 +40,22 @@ export function espalharTodas() {
   }
 }
 
+function ocultarHeaderPilha() {
+  const headers = document.getElementsByClassName('headerPilha');
+  for (let i = 0; i < headers.length; i += 1) {
+    headers[i].style.display = 'none';
+  }
+}
+
+function exibirHeaderPilha() {
+  const headers = document.getElementsByClassName('headerPilha');
+  for (let i = 0; i < headers.length; i += 1) {
+    headers[i].style.display = 'flex';
+  }
+}
+
 export function animation() {
+  ocultarHeaderPilha();
   juntarPilha('pilha1');
   juntarPilha('pilha2');
   juntarPilha('pilha3');
@@ -52,5 +67,6 @@ export function animation() {
   setTimeout(() => {
     separarColunas();
     espalharTodas();
+    exibirHeaderPilha();
   }, 1000);
 }

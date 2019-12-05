@@ -14,22 +14,19 @@ export const Container = styled.div`
 export const GameArea = styled.div`
   display: ${(props) => (props.visible ? 'flex' : 'none')};
   flex-direction: column;
-  /* border: 1px solid red; */
 
   @media(max-width: ${tamanhos.widthMed}){
     justify-content: space-around;
     flex-direction: row;
   }
-
 `;
 
 export const Pilha = styled.div`
   display: flex;
   flex-direction: row;
-  /* border: 1px solid white; */
   align-items: center;
   margin: 5px 0;
-  padding: 10px;
+  padding: 0 10px;
   cursor: pointer;
   
   transition: transform ${transitions.short};
@@ -37,7 +34,7 @@ export const Pilha = styled.div`
 
   border: ${(props) => (props.selecionada ? `2px solid ${cores.primaria}` : 'none')};
 
-  >div + div{
+  > div + div{
     display: flex;
     flex: 1;
     justify-content: space-around;
@@ -46,7 +43,6 @@ export const Pilha = styled.div`
       flex: 1;
       flex-direction: column;
     }
-
   }
 
   @media(max-width: ${tamanhos.widthMed}){
@@ -54,21 +50,20 @@ export const Pilha = styled.div`
     flex-direction: column;
   }
 
-  &:hover{
-    background: #fff3;
+  @media(min-width: ${tamanhos.widthMed}){
+    &:hover{
+      background: #fff3;
+    }
   }
 `;
 
 export const HeaderPilha = styled.div`
   display: flex;
   flex-direction: row;
-  /* border: 1px solid; */
   font-size: 20px;
   height: 40px;
-  margin: 0 20px;
-  background: #fff;
   align-items: center;
-  padding: 5px 10px;
+  color: #fff;
 `;
 
 export const Carta = styled.div`
@@ -85,16 +80,14 @@ export const Carta = styled.div`
     }
 
     @media(max-width: ${tamanhos.widthMin}){
-      width: 50px;
+      width: 55px;
       margin: 0 auto;
     }
-
-
   }
 `;
 
 export const OptionsGame = styled.div`
-  display: flex;
+  display: ${(props) => (props.visible ? 'flex' : 'none')};
   padding: 5px;
 `;
 

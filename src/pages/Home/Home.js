@@ -15,43 +15,51 @@ import * as functions from './functions';
 export default function Home() {
   const deck = useSelector((state) => state.deck);
   const cards = useSelector((state) => state.card);
+  const [partida, setPartida] = useState(0);
   const [etapa, setEtapa] = useState(0);
   const [pilha1, setpilha1] = useState([]);
   const [pilha2, setpilha2] = useState([]);
   const [pilha3, setpilha3] = useState([]);
-  const [started, setStarted] = useState(true);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [started, setStarted] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [pilhaSelecionada, setPilhaSelecionada] = useState(0);
   const dispatch = useDispatch();
 
-  async function newGame(deckId) {
-    const response = await api.get(`/deck/${deckId}/draw/?count=21`);
+  function reiniciarVariaveis() {
     setModalVisible(false);
     setStarted(true);
     setEtapa(1);
+  }
+
+  async function newGame(deckId) {
+    if (partida >= 2) {
+      api.get('/deck/new/shuffle/?deck_count=1').then((response) => {
+        dispatch(deckActions.createDeck(response.data));
+        reiniciarVariaveis();
+      });
+      setPartida(1);
+      return;
+    }
+    setPartida(partida + 1);
+    const response = await api.get(`/deck/${deckId}/draw/?count=21`);
+
+    reiniciarVariaveis();
     dispatch(cardActions.addCards(response.data.cards));
   }
 
-  function next() {
-    if (pilhaSelecionada === 0) {
-      alert('Selecione em qual pilha sua carta está');
-      return;
-    }
-
-
-    setPilhaSelecionada(0);
+  function next(pilha) {
     functions.animation();
-
+    setPilhaSelecionada(0);
     const timer = etapa > 2 ? 0 : 1000;
 
     setTimeout(() => {
-      if (pilhaSelecionada === 1) {
+      if (pilha === 1) {
         dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
       }
-      if (pilhaSelecionada === 2) {
+      if (pilha === 2) {
         dispatch(cardActions.addCards([...pilha3, ...pilha2, ...pilha1]));
       }
-      if (pilhaSelecionada === 3) {
+      if (pilha === 3) {
         dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
       }
     }, timer);
@@ -64,6 +72,11 @@ export default function Home() {
     }
 
     setEtapa(etapa + 1);
+  }
+
+  function selecionarPilha(value) {
+    setPilhaSelecionada(value);
+    next(value);
   }
 
   useEffect(() => {
@@ -90,7 +103,6 @@ export default function Home() {
 
   return (
     <Content>
-
       {
         cards[10] && (
           <Modal
@@ -102,22 +114,19 @@ export default function Home() {
       }
 
       <Container color={cores.background}>
-        <OptionsGame>
+        <OptionsGame visible={!started}>
           <MyButton onClick={() => newGame(deck.deck_id)}>
             Novo Jogo
-          </MyButton>
-          <MyButton onClick={next}>
-            Próxima etapa
           </MyButton>
         </OptionsGame>
 
         <GameArea visible={started}>
           <Pilha
-            onClick={() => setPilhaSelecionada(1)}
+            onClick={() => selecionarPilha(1)}
             id="pilha1"
             selecionada={pilhaSelecionada === 1}
           >
-            <HeaderPilha>1</HeaderPilha>
+            <HeaderPilha className="headerPilha">1</HeaderPilha>
             <div>
               {
                 pilha1.map((card) => (
@@ -130,11 +139,11 @@ export default function Home() {
           </Pilha>
 
           <Pilha
-            onClick={() => setPilhaSelecionada(2)}
+            onClick={() => selecionarPilha(2)}
             id="pilha2"
             selecionada={pilhaSelecionada === 2}
           >
-            <HeaderPilha>2</HeaderPilha>
+            <HeaderPilha className="headerPilha">2</HeaderPilha>
             <div>
               {
                 pilha2.map((card) => (
@@ -147,11 +156,11 @@ export default function Home() {
           </Pilha>
 
           <Pilha
-            onClick={() => setPilhaSelecionada(3)}
+            onClick={() => selecionarPilha(3)}
             id="pilha3"
             selecionada={pilhaSelecionada === 3}
           >
-            <HeaderPilha>3</HeaderPilha>
+            <HeaderPilha className="headerPilha">3</HeaderPilha>
             <div>
               {
                 pilha3.map((card) => (
