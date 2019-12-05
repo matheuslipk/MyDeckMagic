@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { cores, tamanhos } from '../../constants';
+import { cores, tamanhos, transitions } from '../../constants';
 
 export const Container = styled.div`
   display: flex;
@@ -29,6 +29,10 @@ export const Pilha = styled.div`
   align-items: center;
   margin: 5px;
   cursor: pointer;
+  
+  transition: ${transitions.short};
+
+  overflow: hidden;
 
   >div + div{
     display: flex;
@@ -68,12 +72,17 @@ export const Carta = styled.div`
   display: flex;
   width: 113px;
   margin: 5px;
-  transition: 1s;
+  transition: ${transitions.short};
 
   img{
     width: 113px;
     @media(max-width: ${tamanhos.widthMed}){
       width: 90px;
+      margin: 0 auto;
+    }
+
+    @media(max-width: ${tamanhos.widthMin}){
+      width: 70px;
       margin: 0 auto;
     }
 

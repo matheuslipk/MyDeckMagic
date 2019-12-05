@@ -17,3 +17,8 @@ export const zIndex = {
   header: 20,
   modal: 100,
 };
+
+export const transitions = {
+  short: '0.2s',
+  long: '1.5s',
+};

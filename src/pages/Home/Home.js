@@ -10,6 +10,7 @@ import {
 } from './styles';
 import { cores } from '../../constants';
 import { Modal } from '../../components/Modal';
+import * as functions from './functions';
 
 export default function Home() {
   const deck = useSelector((state) => state.deck);
@@ -29,45 +30,30 @@ export default function Home() {
     dispatch(cardActions.addCards(response.data.cards));
   }
 
-  function hiddeCards(value) {
-    let action = 'none';
-    if (!value) {
-      action = 'flex';
-    }
-    const p1 = document.getElementById('pilha1');
-    const p2 = document.getElementById('pilha2');
-    const p3 = document.getElementById('pilha3');
-    p1.children[1].style.display = action;
-    p2.children[1].style.display = action;
-    p3.children[1].style.display = action;
-  }
-
   function next() {
     if (pilhaSelecionada === 0) {
       alert('Selecione em qual pilha sua carta está');
       return;
     }
+    functions.animation();
 
-    setPilhaSelecionada(0);
-    hiddeCards(true);
     setTimeout(() => {
-      hiddeCards(false);
-    }, 700);
-    if (pilhaSelecionada === 1) {
-      dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
-    }
-    if (pilhaSelecionada === 2) {
-      dispatch(cardActions.addCards([...pilha3, ...pilha2, ...pilha1]));
-    }
-    if (pilhaSelecionada === 3) {
-      dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
-    }
+      if (pilhaSelecionada === 1) {
+        dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
+      }
+      if (pilhaSelecionada === 2) {
+        dispatch(cardActions.addCards([...pilha3, ...pilha2, ...pilha1]));
+      }
+      if (pilhaSelecionada === 3) {
+        dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
+      }
+    }, 1000);
+
 
     if (etapa >= 3) {
       alert('Sua carta é a do meio');
       setStarted(false);
       setEtapa(0);
-      return;
     }
 
     setEtapa(etapa + 1);
