@@ -20,5 +20,6 @@ export const zIndex = {
 
 export const transitions = {
   short: '0.2s',
-  long: '1.5s',
+  med: '0.5s',
+  long: '1s',
 };

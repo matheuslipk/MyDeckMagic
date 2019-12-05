@@ -8,6 +8,7 @@ export const Container = styled.div`
   min-height: 100%;
   width: 100%;
   max-width: 1100px;
+  padding: 5px;
 `;
 
 export const GameArea = styled.div`
@@ -27,12 +28,14 @@ export const Pilha = styled.div`
   flex-direction: row;
   /* border: 1px solid white; */
   align-items: center;
-  margin: 5px;
+  margin: 5px 0;
+  padding: 10px;
   cursor: pointer;
   
-  transition: ${transitions.short};
-
+  transition: transform ${transitions.short};
   overflow: hidden;
+
+  border: ${(props) => (props.selecionada ? `2px solid ${cores.primaria}` : 'none')};
 
   >div + div{
     display: flex;
@@ -52,7 +55,7 @@ export const Pilha = styled.div`
   }
 
   &:hover{
-    background: #ddd;
+    background: #fff3;
   }
 `;
 

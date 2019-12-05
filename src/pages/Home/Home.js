@@ -19,7 +19,7 @@ export default function Home() {
   const [pilha1, setpilha1] = useState([]);
   const [pilha2, setpilha2] = useState([]);
   const [pilha3, setpilha3] = useState([]);
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(true);
   const [pilhaSelecionada, setPilhaSelecionada] = useState(0);
   const dispatch = useDispatch();
 
@@ -35,6 +35,7 @@ export default function Home() {
       alert('Selecione em qual pilha sua carta está');
       return;
     }
+    setPilhaSelecionada(0);
     functions.animation();
 
     setTimeout(() => {
@@ -95,7 +96,11 @@ export default function Home() {
         </OptionsGame>
 
         <GameArea visible={started}>
-          <Pilha onClick={() => setPilhaSelecionada(1)} id="pilha1">
+          <Pilha
+            onClick={() => setPilhaSelecionada(1)}
+            id="pilha1"
+            selecionada={pilhaSelecionada === 1}
+          >
             <HeaderPilha>1</HeaderPilha>
             <div>
               {
@@ -108,7 +113,11 @@ export default function Home() {
             </div>
           </Pilha>
 
-          <Pilha onClick={() => setPilhaSelecionada(2)} id="pilha2">
+          <Pilha
+            onClick={() => setPilhaSelecionada(2)}
+            id="pilha2"
+            selecionada={pilhaSelecionada === 2}
+          >
             <HeaderPilha>2</HeaderPilha>
             <div>
               {
@@ -121,7 +130,11 @@ export default function Home() {
             </div>
           </Pilha>
 
-          <Pilha onClick={() => setPilhaSelecionada(3)} id="pilha3">
+          <Pilha
+            onClick={() => setPilhaSelecionada(3)}
+            id="pilha3"
+            selecionada={pilhaSelecionada === 3}
+          >
             <HeaderPilha>3</HeaderPilha>
             <div>
               {
