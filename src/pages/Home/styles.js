@@ -49,10 +49,8 @@ export const Pilha = styled.div`
     flex-direction: column;
   }
 
-  @media(min-width: ${tamanhos.widthMin}){
-    &:hover{
-      background: #fff3;
-    }
+  &:hover{
+    background: #fff3;
   }
 `;
 
@@ -71,6 +69,10 @@ export const Carta = styled.div`
   margin: 5px;
   transition: ${transitions.short};
 
+  @media(max-width: ${tamanhos.widthMin}){
+    margin: 1px;
+  }
+
   img{
     width: 113px;
     @media(max-width: ${tamanhos.widthMed}){
@@ -79,7 +81,7 @@ export const Carta = styled.div`
     }
 
     @media(max-width: ${tamanhos.widthMin}){
-      width: 60px;
+      width: 65px;
       margin: 0 auto;
     }
   }

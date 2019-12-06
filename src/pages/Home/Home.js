@@ -30,10 +30,24 @@ export default function Home() {
     setEtapa(1);
   }
 
+  function shuffleCards(pilha) {
+    if (pilha === 1) {
+      dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
+    }
+    if (pilha === 2) {
+      dispatch(cardActions.addCards([...pilha3, ...pilha2, ...pilha1]));
+    }
+    if (pilha === 3) {
+      dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
+    }
+  }
+
   async function newGame(deckId) {
-    if (cards.length < 21) {
+    if (cards.length !== 21) {
       const response = await api.get(`/deck/${deckId}/draw/?count=21`);
-      dispatch(cardActions.addCards(response.data.cards));
+      await dispatch(cardActions.addCards(response.data.cards));
+    } else {
+      shuffleCards(1);
     }
     reiniciarVariaveis();
   }
@@ -42,15 +56,7 @@ export default function Home() {
     setPilhaSelecionada(0);
 
     setTimeout(() => {
-      if (pilha === 1) {
-        dispatch(cardActions.addCards([...pilha3, ...pilha1, ...pilha2]));
-      }
-      if (pilha === 2) {
-        dispatch(cardActions.addCards([...pilha3, ...pilha2, ...pilha1]));
-      }
-      if (pilha === 3) {
-        dispatch(cardActions.addCards([...pilha2, ...pilha3, ...pilha1]));
-      }
+      shuffleCards(pilha);
     }, 1000);
 
     if (etapa >= 3) {

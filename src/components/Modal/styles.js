@@ -55,6 +55,8 @@ export const Container = styled.div`
       color: #fff;
       border-radius: 4px;
       border: none;
+      width: 200px;
+      margin-top: 20px;
     }
 
   }
